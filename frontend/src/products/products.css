@@ -1,0 +1,32 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+}
+.product-section {
+    margin-bottom: 50px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.see-all {
+    color: #0c831f;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+}
