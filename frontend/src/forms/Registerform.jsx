@@ -24,6 +24,7 @@ export default function Register()
     const handlechange=(e)=>{
         setformdata({...formdata,[e.target.name]:e.target.value});
     };
+    const getCSRF = () =>document.cookie.split("; ").find(row => row.startsWith("csrftoken="))?.split("=")[1];
 
     const handleRegistrationSubmit=async(e)=>
     {
@@ -35,8 +36,9 @@ export default function Register()
         }
         setloading(true)
         try{
+            const csrftoken = getCSRF();
             const response=await axios.post(
-                "http://127.0.0.1:8000/api/register/",
+                "http://localhost:8000/api/register/",
                 {
                     username:formdata.username,
                     email:formdata.email,
@@ -48,8 +50,14 @@ export default function Register()
                     pincode: formdata.pincode,
                     password: formdata.password
                 },
-                {headers:{"Content-Type":"application/json"}}
-            )
+                {
+                    headers:{
+                        "Content-Type":"application/json",
+                        "X-CSRFToken":csrftoken
+                    },
+                    withCredentials:true,
+                }
+            );
             console.log(response.data);
             setformdata({
                 username: "",

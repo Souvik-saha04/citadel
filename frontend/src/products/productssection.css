@@ -1,13 +1,39 @@
+/* productssection.css */
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px 40px;
 }
+
 .product-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 16px;
+  display: grid;
+  gap: 16px;
 }
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1199px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 899px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.product-grid a {
+  display: block;
+  height: 100%; /* Make links fill the grid cell */
+}
+
 .product-section {
     margin-bottom: 50px;
 }
@@ -22,6 +48,7 @@
 .section-title {
     font-size: 28px;
     font-weight: 700;
+    text-transform: capitalize;
 }
 
 .see-all {

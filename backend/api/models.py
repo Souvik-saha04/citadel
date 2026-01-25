@@ -10,3 +10,5 @@ class UserProfile(models.Model):
     pincode=models.CharField(max_length=6)
     def __str__(self):
         return self.user.username
+
+

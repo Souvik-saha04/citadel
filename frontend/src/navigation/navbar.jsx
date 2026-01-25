@@ -2,9 +2,47 @@ import './navbar.css'
 import { Link } from 'react-router-dom'
 import { CgProfile } from "react-icons/cg"
 import { MdStorefront } from "react-icons/md"
+import axios from 'axios'
 
-export default function Navbar({auth})
+export default function Navbar({auth,setauth})
 {
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + "=")) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  const handlelogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8000/api/logout/",
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+          },
+        }
+      );
+      setauth({
+        isLoggedIn: false,
+        username: null,
+      });
+      alert("logged OUT")
+    } catch (err) {
+      console.error("Logout failed:", err.response?.data || err.message);
+    }
+
+    }
     return(
         <header className="header">
             <div style={{display: "flex" , alignItems: "center"}}>
@@ -44,6 +82,7 @@ export default function Navbar({auth})
                     <CgProfile className="profile-icon"/>
                     <span className="profile-name">{auth.username}</span>
                     </div></Link>
+                    <button onClick={handlelogout} className='logout-button'>logout</button>
                 </>
                 }
                 {/* <Link to='/cart'><button className="cart-btn">

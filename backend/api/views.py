@@ -1,16 +1,22 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import status
 from .models import *
 from rest_framework.permissions import AllowAny
-from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
 from rest_framework.permissions import IsAuthenticated
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 
 # Create your views here.
+
+@ensure_csrf_cookie
+def get_csrf(request):
+    return JsonResponse({"ok": True})
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -29,10 +35,9 @@ def handleLogin(request):
             status=status.HTTP_200_OK
         )
     else:
-        return Response(status=status.HTTP_401_UNAUTHORIZED)
+        return Response({"message": "Invalid username or password"},status=status.HTTP_401_UNAUTHORIZED)
 
 
-@csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def handleRegistration(request):
@@ -93,3 +98,19 @@ def handleprofile(request):
         }
 
     )
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def Handlelogout(request):
+    logout(request)
+    return JsonResponse({"message":"successfully logged OUT "})
+
+
+@api_view(["GET"])
+def check_auth(request):
+    if request.user.is_authenticated:
+        return JsonResponse({
+            "isLoggedIn": True,
+            "username": request.user.username
+        })
+    return JsonResponse({"isLoggedIn": False}, status=401)

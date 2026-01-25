@@ -1,18 +1,21 @@
 import './card.css'
-export default function Card()
+import { lazy, memo } from 'react'
+function Card({data})
 {
     return(
-         <div className="product-card">
-            <div className="product-image">
-                <div style={{width: "60px", height: "60px", background: "#333", borderRadius: "50%"}}></div>
+         <div className="product-card-div">
+            <div className="product-card-image">
+                {/* <div style={{width: "60px", height: "60px", background: "#333", borderRadius: "50%"}}>{data.image}</div> */}
+                <img src={data.image} alt={data.name} loading={lazy}/>
             </div>
             <div className="delivery-time">⏱ 8 MINS</div>
-            <div className="product-name">Bio-Degradable Crusher - Stash Pro</div>
-            <div className="product-quantity">1 piece</div>
+            <div className="product-card-name">{data.name}</div>
+            <div className="product-quantity">{data.stock_quantity}</div>
             <div className="product-footer">
-                <div className="product-price">₹300</div>
+                <div className="product-card-price">{data.price_per_unit}/{data.unit}</div>
                 <button className="add-btn">ADD</button>
             </div>
         </div>
     )
 }
+export default memo(Card)

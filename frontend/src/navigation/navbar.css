@@ -104,7 +104,18 @@ a {
     cursor: pointer;
     font-size: 14px;
 }
-
+.logout-button{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #0c831f;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
 /* Profile Section */
 .profile-section {
     display: flex;

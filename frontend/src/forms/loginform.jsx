@@ -18,11 +18,14 @@ export default function Login({setauth})
             {...formdata,[e.target.name]:e.target.value}
         );
     };
+    const getCSRF = () =>document.cookie.split("; ").find(row => row.startsWith("csrftoken="))?.split("=")[1];
+
     const handlelogin=async(e)=>
     {
         e.preventDefault();
         setloading(true);
         try{
+            const csrftoken = getCSRF();
             const response=await axios.post(
                 "http://localhost:8000/api/login/",
                 {
@@ -30,7 +33,10 @@ export default function Login({setauth})
                     password:formdata.password
                 },
                 {
-                    headers:{'Content-Type':'application/json'},
+                    headers:{
+                        'Content-Type':'application/json',
+                        "X-CSRFToken":csrftoken
+                    },
                     withCredentials:true
                 }
             )
@@ -40,11 +46,12 @@ export default function Login({setauth})
                 username: response.data.user_name,
             });
             alert("successfully logged in ..");
-            navigate('/profile');         
+            navigate('/');         
         }
         catch(error)
         {
-            alert(error.response.data);
+            alert(error.response?.data?.message || "Login failed");
+
         }
         finally{
             setloading(false);
