@@ -1,21 +1,45 @@
 import './add.css';
-export default function Add()
-{
+import { MessageCircle, TrendingDown, Sparkles } from 'lucide-react';
+
+export default function Add() {
     return(
         <div className="hero-banner">
             <div className="hero-content">
-                <h1>Stock up on daily essentials</h1>
-                <p>Get farm-fresh goodness & a range of exotic<br/>fruits, vegetables, eggs & more</p>
-                <button className="hero-btn">Shop Now</button>
+                <div className="feature-badge">
+                    <Sparkles size={16} />
+                    <span>AI-Powered Feature</span>
+                </div>
+                <h1>Negotiate. Save. Shop Smart.</h1>
+                <p>Our AI negotiates the best prices for you!<br/>Get instant discounts on every product</p>
+                <button className="hero-btn">
+                    <MessageCircle size={20} />
+                    <span>Try AI Negotiation</span>
+                </button>
             </div>
             <div className="hero-image">
-                <div style={{width: "500px", height: "200px", display: "flex", gap: "10px", alignItems: "center"}}>
-                    <div style={{width: "80px", height: "120px", background: "#fff", borderRadius: "8px"}}></div>
-                    <div style={{width: "60px", height: "100px", background: "#fff", borderRadius: "8px"}}></div>
-                    <div style={{width: "70px", height: "110px", background: "#fff", borderRadius: "8px"}}></div>
-                    <div style={{width: "90px", height: "90px", background: "#fff", borderRadius: "50%"}}></div>
-                    <div style={{width: "60px", height: "80px", background: "#fff", borderRadius: "8px"}}></div>
-                    <div style={{width: "80px", height: "130px", background: "#fff", borderRadius: "8px"}}></div>
+                <div className="negotiation-visual">
+                    <div className="price-card original">
+                        <div className="price-label">Original</div>
+                        <div className="price-amount">₹100</div>
+                    </div>
+                    
+                    <div className="ai-avatar">
+                        <div className="ai-icon">AI</div>
+                        <div className="negotiation-waves">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    
+                    <div className="price-card negotiated">
+                        <div className="price-label">Your Price</div>
+                        <div className="price-amount">₹70</div>
+                        <div className="savings-badge">
+                            <TrendingDown size={14} />
+                            30% OFF
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

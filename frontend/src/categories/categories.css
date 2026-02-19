@@ -1,9 +1,11 @@
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(auto-fit, 120px);
     gap: 20px;
+    justify-content: center;   
     margin-bottom: 50px;
 }
+
 
 .category-item {
     text-align: center;

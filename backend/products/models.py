@@ -35,10 +35,12 @@ class Product(models.Model):
     variant=models.CharField(max_length=15,choices=varient_choices,null=False,blank=False)
     price_per_unit=models.DecimalField(decimal_places=2,max_digits=7,null=False,blank=False)
     original_price=models.DecimalField(decimal_places=2,max_digits=7,null=False,blank=False)
+    min_price = models.DecimalField(max_digits=7, decimal_places=2)
+    current_price = models.DecimalField(max_digits=7, decimal_places=2)
     stock_quantity=models.IntegerField(null=False,blank=False)
     harvest_date=models.DateField(null=False,blank=False)
     expiry=models.DateField(null=True,blank=True)
     description=models.TextField(null=True,blank=True)
-    image=models.URLField(null=False,blank=False)
+    image=models.URLField(max_length=1000,null=False,blank=False)
     def __str__(self):
         return self.name

@@ -1,10 +1,8 @@
 import Card from "../components/card";
 import { Link } from "react-router-dom";
-import { useContext, useEffect,useState } from "react";
 import './productssection.css'
-import { ProductContext } from "../context/ProductContext";
 
-export default function Products() {
+export default function Products({products}) {
 const categories = [
   "Vegetables",
   "Leafy",
@@ -13,23 +11,15 @@ const categories = [
   "Eggs",
   "Meat"
 ];
-const [products,setProducts]=useState([])
-  // const {products}=useContext(ProductContext);
-  useEffect(()=>{
-        fetch("http://localhost:8000/products/get_products/")
-        .then((response)=> response.json())
-        .then((data)=>{
-        setProducts(data);
-        })
-        .catch((error)=>console.log(error))
-    },[]
-    )
+
   return (
     <>
       {categories.map((category) => {
-        const categoryProducts = products.filter(
+        const categoryProducts = products
+        .filter(
           (p) => p.category === category
-        );
+        )
+        .slice(0,5);
         if (categoryProducts.length === 0) return null;
         return (
           <div key={category} className="product-section">

@@ -4,16 +4,8 @@ import Products from '../products/productssection';
 import Add from '../advertisement/add'
 import Smallad from '../advertisement/smallad'
 import Categories from '../categories/categories'
-import { useEffect } from "react";
 
-function Homepage({ auth, setauth }) {
-
-  useEffect(() => {
-  fetch("http://localhost:8000/api/csrf/", {
-    credentials: "include",
-  });
-}, []);
-
+function Homepage({ auth, setauth,products }) {
   return (
     <>
       <Navbar auth={auth} setauth={setauth}/>
@@ -21,7 +13,7 @@ function Homepage({ auth, setauth }) {
         <Add/>
         <Smallad/>
         <Categories/>
-        <Products/>
+        <Products products={products}/>
       </div>
     </>
   )

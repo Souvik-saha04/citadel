@@ -5,42 +5,76 @@ import Cart from "./navigation/cart"
 import Profile from "./navigation/profile"
 import ProductView from './products/singleproduct'
 import Seller from "./navigation/seller"
-import { Route,Routes } from 'react-router-dom'
-import { useState,useEffect } from "react"
+import ProductListing from './products/category_prod_sec'
+import { Route, Routes, Navigate } from 'react-router-dom'
+import { useState, useEffect } from "react"
+
 function App() {
-  const [auth,setauth]=useState({isLoggedIn:false,username:""});
-  useEffect(() => {
-  fetch("http://localhost:8000/api/check_auth/", {
-    credentials: "include",
+
+  const [auth, setauth] = useState({
+    isLoggedIn: false,
+    username: ""
   })
-    .then(res => {
-      if (!res.ok) throw new Error();
-      return res.json();
+
+  const [products, setProducts] = useState([])
+
+  useEffect(() => {
+    const access = localStorage.getItem("access")
+    setauth({
+      isLoggedIn: !!access,
+      username: access ? "user" : ""
     })
-    .then(data => {
-      setauth({
-        isLoggedIn: true,
-        username: data.username,
-      });
-    })
-    .catch(() => {
-      setauth({
-        isLoggedIn: false,
-        username: "",
-      });
-    });
-}, []);
+  }, [])
+
+  useEffect(() => {
+    fetch("http://localhost:8000/products/get_products/")
+      .then(res => res.json())
+      .then(data => setProducts(data))
+      .catch(err => console.error(err))
+  }, [])
+
+  const RequireAuth = ({ children }) => {
+    return auth.isLoggedIn ? children : <Navigate to="/login" />
+  }
 
   return (
-      <Routes>
-        <Route path="/" element={<Homepage auth={auth} setauth={setauth}/>}></Route>
-        <Route path="/register" element={<Register/>}></Route>
-        <Route path="/login" element={<Login setauth={setauth}/>}></Route>
-        <Route path="/cart" element={<Cart/>}></Route>
-        <Route path="/seller" element={<Seller/>}></Route>
-        <Route path="/profile" element={<Profile/>}></Route> 
-        <Route path="/product/:id" element={<ProductView/>}></Route>
-      </Routes>
+    <Routes>
+
+      <Route
+        path="/"
+        element={<Homepage auth={auth} setauth={setauth} products={products} />}
+      />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login setauth={setauth} />} />
+      <Route path="/products" element={<ProductListing products={products} />} />
+      <Route path="/product/:id" element={<ProductView />} />
+
+      <Route
+        path="/profile"
+        element={
+          <RequireAuth>
+            <Profile />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <RequireAuth>
+            <Cart />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/seller"
+        element={
+          <RequireAuth>
+            <Seller />
+          </RequireAuth>
+        }
+      />
+
+    </Routes>
   )
 }
 

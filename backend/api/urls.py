@@ -5,7 +5,7 @@ urlpatterns=[
     path('register/',handleRegistration),
     path('login/',handleLogin),
     path('profile/',handleprofile),
-    path('csrf/',get_csrf),
-    path('logout/',Handlelogout),
+    path('logout/',handlelogout),
+    path('refresh/',refresh_access_token),
     path('check_auth/',check_auth),
 ]

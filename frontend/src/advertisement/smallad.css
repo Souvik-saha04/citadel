@@ -6,45 +6,65 @@
 }
 
 .category-card {
-    padding: 30px;
+    padding: 40px 30px;
     border-radius: 12px;
     cursor: pointer;
-    transition: transform 0.2s;
 }
 
-.category-card:hover {
-    transform: translateY(-4px);
-}
-
-.card-pharmacy {
+.card-farm {
     background: #00b4d8;
 }
 
-.card-pet {
-    background: #ffba08;
+.card-freshness {
+    background: #83aff0 ;
 }
 
-.card-baby {
+.card-delivery {
     background: #d0e2f5;
 }
 
 .category-card h3 {
     font-size: 24px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     font-weight: 700;
 }
 
+.card-farm h3,
+.card-farm p {
+    color: #fff;
+}
+
+.card-freshness h3,
+.card-freshness p {
+    color: #fff;
+}
+
+.card-delivery h3,
+.card-delivery p {
+    color: #000;
+}
+
 .category-card p {
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 15px;
+    margin-bottom: 24px;
+    line-height: 1.5;
 }
 
 .card-btn {
-    padding: 10px 24px;
+    padding: 12px 28px;
     background: #fff;
+    color: #000;
     border: none;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .category-cards {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 }

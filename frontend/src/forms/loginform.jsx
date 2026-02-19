@@ -18,14 +18,11 @@ export default function Login({setauth})
             {...formdata,[e.target.name]:e.target.value}
         );
     };
-    const getCSRF = () =>document.cookie.split("; ").find(row => row.startsWith("csrftoken="))?.split("=")[1];
-
     const handlelogin=async(e)=>
     {
         e.preventDefault();
         setloading(true);
         try{
-            const csrftoken = getCSRF();
             const response=await axios.post(
                 "http://localhost:8000/api/login/",
                 {
@@ -35,11 +32,13 @@ export default function Login({setauth})
                 {
                     headers:{
                         'Content-Type':'application/json',
-                        "X-CSRFToken":csrftoken
                     },
                     withCredentials:true
                 }
             )
+            localStorage.setItem("access",response.data.access);
+            localStorage.setItem("refresh",response.data.refresh);
+
             console.log(response.data)
             setauth({
                 isLoggedIn:true,
