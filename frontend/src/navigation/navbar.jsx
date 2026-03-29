@@ -5,8 +5,16 @@ import { MdStorefront } from "react-icons/md"
 import { useState, useEffect, useRef } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { BsCart3 } from "react-icons/bs";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 import axiosInstance from '../api/axiosInstance'
+
+const SAVED_ADDRESSES = [
+  { id: 1, label: "Home",    icon: "🏠", city: "Gurgaon",   pincode: "700124", full: "BG2, Pocket B, South City I, Sector 41, Gurgaon" },
+  { id: 2, label: "Office",  icon: "🏢", city: "Gurugram",  pincode: "110001", full: "4th Floor, Tower B, Cyber Hub, DLF Phase 2, Gurugram" },
+  { id: 3, label: "Parents", icon: "👨‍👩‍👦", city: "Pune",     pincode: "400053", full: "12, Shivaji Nagar, Near MG Road, Pune" },
+  { id: 4, label: "Friend",  icon: "👤", city: "Bengaluru", pincode: "560001", full: "No. 7, Brigade Road, Shivajinagar, Bengaluru" },
+]
 
 export default function Navbar({ auth, setauth }) {
   const [data, setData] = useState(null)
@@ -15,56 +23,53 @@ export default function Navbar({ auth, setauth }) {
   const [searchResults, setSearchResults] = useState([])
   const [showDropdown, setShowDropdown] = useState(false)
   const [searching, setSearching] = useState(false)
+
+  // Address state
+  const [selectedAddress, setSelectedAddress] = useState(SAVED_ADDRESSES[0])
+  const [showAddrDropdown, setShowAddrDropdown] = useState(false)
+
   const searchRef = useRef(null)
+  const addrRef = useRef(null)
   const navigate = useNavigate()
 
   useEffect(() => {
     axiosInstance.get('/api/profile/')
       .then((res) => {
         setData(res.data)
-
-        localStorage.setItem(
-          "deliveryLocation",
-          JSON.stringify({
-            city: res.data.city,
-            pincode: res.data.pincode
-          })
-        )
+        localStorage.setItem("deliveryLocation", JSON.stringify({
+          city: res.data.city,
+          pincode: res.data.pincode,
+          first_name: res.data.first_name
+        }))
       })
-      .catch(() => {
-        setauth({ isLoggedIn: false, username: null })
-      })
+      .catch(() => setauth({ isLoggedIn: false, username: null }))
       .finally(() => setLoading(false))
   }, [setauth])
 
-  // Close dropdown when clicking outside
+  // Close search dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchRef.current && !searchRef.current.contains(event.target)) {
         setShowDropdown(false)
+      }
+      if (addrRef.current && !addrRef.current.contains(event.target)) {
+        setShowAddrDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  // Search products
+  // Debounced search
   useEffect(() => {
     if (searchQuery.trim().length > 0) {
       setSearching(true)
       const timer = setTimeout(() => {
         axiosInstance.get(`/products/?search=${searchQuery}`)
-          .then((res) => {
-            setSearchResults(res.data)
-            setShowDropdown(true)
-          })
-          .catch((err) => {
-            console.error('Search failed:', err)
-            setSearchResults([])
-          })
+          .then((res) => { setSearchResults(res.data); setShowDropdown(true) })
+          .catch(() => setSearchResults([]))
           .finally(() => setSearching(false))
-      }, 300) // Debounce search
-
+      }, 300)
       return () => clearTimeout(timer)
     } else {
       setSearchResults([])
@@ -72,24 +77,23 @@ export default function Navbar({ auth, setauth }) {
     }
   }, [searchQuery])
 
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value)
-  }
-
   const handleProductClick = (productId) => {
     setShowDropdown(false)
     setSearchQuery('')
     navigate(`/product/${productId}`)
   }
 
-  if (loading) return <p>Loading...</p>
+  const handleSelectAddress = (addr) => {
+    setSelectedAddress(addr)
+    setShowAddrDropdown(false)
+  }
+
+  if (loading) return <span className="loader"></span>
 
   const handleLogout = async () => {
     try {
       const refresh = localStorage.getItem("refresh")
-      if (refresh) {
-        await axiosInstance.post('/api/logout/', { refresh })
-      }
+      if (refresh) await axiosInstance.post('/api/logout/', { refresh })
     } catch (err) {
       console.error("Logout failed:", err.response?.data || err.message)
     } finally {
@@ -108,16 +112,56 @@ export default function Navbar({ auth, setauth }) {
           <span className="logo-blink">Grocers</span>
         </div>
 
-        <div className="delivery-info">
+        {/* ── DELIVERY / ADDRESS TRIGGER ── */}
+        <div
+          className={`delivery-info${showAddrDropdown ? ' delivery-info--open' : ''}`}
+          ref={addrRef}
+          onClick={() => setShowAddrDropdown(prev => !prev)}
+        >
           <div className="delivery-time">
-            {data ? `Delivering to ${data.city}` : "Select Delivery location"}
+            Delivering to {selectedAddress.city}
+            <MdKeyboardArrowDown
+              className={`delivery-chevron${showAddrDropdown ? ' delivery-chevron--up' : ''}`}
+            />
           </div>
           <div className="delivery-location">
-            {data && `Pincode : ${data.pincode}`}
+            {selectedAddress.label} · {selectedAddress.pincode}
           </div>
+
+          {/* ── ADDRESS DROPDOWN ── */}
+          {showAddrDropdown && (
+            <div className="nav-addr-dropdown" onClick={e => e.stopPropagation()}>
+              <div className="nav-addr-dropdown-title">Choose delivery address</div>
+
+              {SAVED_ADDRESSES.map(addr => (
+                <div
+                  key={addr.id}
+                  className={`nav-addr-item${selectedAddress.id === addr.id ? ' nav-addr-item--active' : ''}`}
+                  onClick={() => handleSelectAddress(addr)}
+                >
+                  <span className="nav-addr-icon">{addr.icon}</span>
+                  <div className="nav-addr-body">
+                    <div className="nav-addr-label">
+                      {addr.label}
+                      <span className="nav-addr-pin">&nbsp;·&nbsp;{addr.pincode}</span>
+                    </div>
+                    <div className="nav-addr-full">{addr.full}</div>
+                  </div>
+                  {selectedAddress.id === addr.id && (
+                    <span className="nav-addr-check">✓</span>
+                  )}
+                </div>
+              ))}
+
+              <div className="nav-addr-add">
+                + Add new address
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
+      {/* ── SEARCH ── */}
       <div className="search-box" ref={searchRef}>
         <span className="search-icon"><CiSearch /></span>
         <input
@@ -125,25 +169,16 @@ export default function Navbar({ auth, setauth }) {
           className="search-input"
           placeholder='Search what you like'
           value={searchQuery}
-          onChange={handleSearchChange}
+          onChange={e => setSearchQuery(e.target.value)}
         />
-        
         {showDropdown && (
           <div className="search-dropdown">
             {searching ? (
               <div className="search-loading">Searching...</div>
             ) : searchResults.length > 0 ? (
               searchResults.map((product) => (
-                <div
-                  key={product.id}
-                  className="search-item"
-                  onClick={() => handleProductClick(product.id)}
-                >
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="search-item-image"
-                  />
+                <div key={product.id} className="search-item" onClick={() => handleProductClick(product.id)}>
+                  <img src={product.image} alt={product.name} className="search-item-image" />
                   <div className="search-item-details">
                     <div className="search-item-name">{product.name}</div>
                     <div className="search-item-category">{product.category}</div>
@@ -158,6 +193,7 @@ export default function Navbar({ auth, setauth }) {
         )}
       </div>
 
+      {/* ── ACTIONS ── */}
       <div className="header-actions">
         <Link to="/seller">
           <div className="seller-section">
@@ -175,17 +211,13 @@ export default function Navbar({ auth, setauth }) {
         ) : (
           <>
             <Link to="/cart"><button className="cart-btn"><BsCart3 /> My Cart</button></Link>
-
             <Link to="/profile">
               <div className="profile-section">
                 <CgProfile className="profile-icon" />
-                <span className="profile-name">{auth.username}</span>
+                <span className="profile-name">{data.first_name}</span>
               </div>
             </Link>
-
-            <button onClick={handleLogout} className="logout-button">
-              Logout
-            </button>
+            <button onClick={handleLogout} className="logout-button">Logout</button>
           </>
         )}
       </div>

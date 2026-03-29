@@ -5,6 +5,7 @@ import Cart from "./navigation/cart"
 import Profile from "./navigation/profile"
 import ProductView from './products/singleproduct'
 import Seller from "./navigation/seller"
+import OrderConfirmation from "./order_confirm/confirm_page"
 import ProductListing from './products/category_prod_sec'
 import { Route, Routes, Navigate } from 'react-router-dom'
 import { useState, useEffect } from "react"
@@ -34,8 +35,9 @@ function App() {
   }, [])
 
   const RequireAuth = ({ children }) => {
-    return auth.isLoggedIn ? children : <Navigate to="/login" />
-  }
+  const access = localStorage.getItem("access");
+  return access ? children : <Navigate to="/login" />;
+};
 
   return (
     <Routes>
@@ -72,6 +74,14 @@ function App() {
             <Seller />
           </RequireAuth>
         }
+      />
+      <Route
+      path="/order_confirmed"
+      element={
+        <RequireAuth>
+          <OrderConfirmation/>
+        </RequireAuth>
+      }
       />
 
     </Routes>

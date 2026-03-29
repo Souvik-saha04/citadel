@@ -446,4 +446,181 @@
                 justify-content: space-between;
             }
         }
-  
+  /* ── ADDRESS MODAL OVERLAY ── */
+.addr-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.38);
+    z-index: 999;
+    display: flex;
+    align-items: flex-end;          /* slides up from bottom on mobile */
+    justify-content: center;
+    animation: addr-fade-in 0.18s ease;
+}
+
+@keyframes addr-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* ── MODAL PANEL ── */
+.addr-modal {
+    background: #fff;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 20px 20px 0 0;
+    padding: 0 0 24px;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.14);
+    animation: addr-slide-up 0.22s ease;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes addr-slide-up {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── MODAL HEADER ── */
+.addr-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 22px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    flex-shrink: 0;
+}
+
+.addr-modal-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.addr-close-btn {
+    background: #f3f4f6;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+.addr-close-btn:hover { background: #e0e0e0; }
+
+/* ── ADDRESS LIST ── */
+.addr-list {
+    overflow-y: auto;
+    flex: 1;
+    padding: 10px 0;
+}
+
+.addr-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid #f7f7f7;
+    gap: 12px;
+}
+.addr-item:last-child { border-bottom: none; }
+.addr-item:hover { background: #f2faf5; }
+
+.addr-item--active {
+    background: #e8f5ee;
+}
+.addr-item--active:hover { background: #ddf0e6; }
+
+.addr-item-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.addr-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.addr-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.addr-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 3px;
+}
+
+.addr-pin {
+    font-weight: 500;
+    color: #1e8c46;
+}
+
+.addr-full {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #888;
+    font-weight: 400;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.addr-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #1e8c46;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* ── ADD NEW ADDRESS BUTTON ── */
+.addr-add-btn {
+    margin: 12px 22px 0;
+    width: calc(100% - 44px);
+    padding: 13px;
+    border-radius: 10px;
+    border: 1.5px dashed #1e8c46;
+    background: transparent;
+    color: #1e8c46;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+}
+.addr-add-btn:hover { background: #e8f5ee; }
+
+/* ── DESKTOP: center modal instead of bottom sheet ── */
+@media (min-width: 600px) {
+    .addr-overlay {
+        align-items: center;
+    }
+    .addr-modal {
+        border-radius: 20px;
+        max-height: 70vh;
+    }
+}
