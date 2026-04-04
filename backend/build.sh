@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-pip install -r requirements.txt
+cd backend
+pip install -r requirements_utf8.txt
 python manage.py collectstatic --noinput
 python manage.py migrate
