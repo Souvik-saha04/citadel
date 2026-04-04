@@ -5,15 +5,25 @@ import { MdStorefront } from "react-icons/md"
 import { useState, useEffect, useRef } from 'react'
 import { CiSearch } from "react-icons/ci";
 import { BsCart3 } from "react-icons/bs";
+import { PiBuildingOfficeFill } from "react-icons/pi";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdFamilyRestroom } from "react-icons/md";
+import { FaUserFriends } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
+import { SlLogout } from "react-icons/sl";
+import { FaRegAddressBook } from "react-icons/fa6";
+import { FaBoxOpen } from "react-icons/fa6";
+import { RiCoupon2Line } from "react-icons/ri";
+
+
 
 import axiosInstance from '../api/axiosInstance'
 
 const SAVED_ADDRESSES = [
-  { id: 1, label: "Home",    icon: "🏠", city: "Gurgaon",   pincode: "700124", full: "BG2, Pocket B, South City I, Sector 41, Gurgaon" },
-  { id: 2, label: "Office",  icon: "🏢", city: "Gurugram",  pincode: "110001", full: "4th Floor, Tower B, Cyber Hub, DLF Phase 2, Gurugram" },
-  { id: 3, label: "Parents", icon: "👨‍👩‍👦", city: "Pune",     pincode: "400053", full: "12, Shivaji Nagar, Near MG Road, Pune" },
-  { id: 4, label: "Friend",  icon: "👤", city: "Bengaluru", pincode: "560001", full: "No. 7, Brigade Road, Shivajinagar, Bengaluru" },
+  { id: 1, label: "Home",    icon: <FaHome />, city: "Gurgaon",   pincode: "700124", full: "BG2, Pocket B, South City I, Sector 41, Gurgaon" },
+  { id: 2, label: "Office",  icon: <PiBuildingOfficeFill />, city: "Gurugram",  pincode: "110001", full: "4th Floor, Tower B, Cyber Hub, DLF Phase 2, Gurugram" },
+  { id: 3, label: "Parents", icon: <MdFamilyRestroom />, city: "Pune",     pincode: "400053", full: "12, Shivaji Nagar, Near MG Road, Pune" },
+  { id: 4, label: "Friend",  icon: <FaUserFriends />, city: "Bengaluru", pincode: "560001", full: "No. 7, Brigade Road, Shivajinagar, Bengaluru" },
 ]
 
 export default function Navbar({ auth, setauth }) {
@@ -211,13 +221,42 @@ export default function Navbar({ auth, setauth }) {
         ) : (
           <>
             <Link to="/cart"><button className="cart-btn"><BsCart3 /> My Cart</button></Link>
-            <Link to="/profile">
-              <div className="profile-section">
-                <CgProfile className="profile-icon" />
-                <span className="profile-name">{data.first_name}</span>
+            {/* Replace the existing profile Link + logout button with this */}
+            <div className="profile-wrapper">
+              <Link to="/profile">
+                <div className="profile-section">
+                  <CgProfile className="profile-icon" />
+                  <span className="profile-name">{data.first_name}</span>
+                  <MdKeyboardArrowDown className="delivery-chevron" />
+                </div>
+              </Link>
+
+              <div className="profile-dropdown">
+                <div className="profile-dropdown-header">
+                  <span className="profile-dropdown-name">{data.first_name}</span>
+                  <span className="profile-dropdown-sub">Welcome back!</span>
+                </div>
+                <Link to="/profile" className="profile-dropdown-item">
+                  <CgProfile /> My Profile
+                </Link>
+                <Link to="/orders" className="profile-dropdown-item">
+                  <FaBoxOpen/> My Orders
+                </Link>
+                <Link to="/wishlist" className="profile-dropdown-item">
+                  <FaRegAddressBook/> Wishlist
+                </Link>
+                <Link to="/saved-addresses" className="profile-dropdown-item">
+                  <FaRegAddressBook/> Saved Addresses
+                </Link>
+                <Link to="/coupons" className="profile-dropdown-item">
+                  <RiCoupon2Line/> Coupons
+                </Link>
+                <div className="profile-dropdown-divider" />
+                <button onClick={handleLogout} className="profile-dropdown-logout">
+                  <SlLogout/> Logout
+                </button>
               </div>
-            </Link>
-            <button onClick={handleLogout} className="logout-button">Logout</button>
+            </div>
           </>
         )}
       </div>

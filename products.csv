@@ -1,0 +1,24 @@
+name,category,unit,quantity,variant,price_per_unit,original_price,min_price,current_price,stock_quantity,harvest_date,expiry,description,image_path
+Tomato,Vegetables,kilogram,10,fresh,50.00,60.00,45.00,50.00,100,2026-04-01,2026-04-05,Fresh red tomatoes from farm,images/tomato.jfif
+Mutton,Meat,kilogram,5,organic,800.00,900.00,750.00,800.00,50,2026-04-01,2026-04-03,Fresh organic goat meat,images/mutton.jfif
+Ostrich Eggs,Eggs,piece,2,natural,1500.00,1800.00,1400.00,1500.00,20,2026-04-01,2026-04-10,Large and nutritious ostrich eggs,images/ostrich_eggs.jfif
+Potato,Vegetables,kilogram,20,regular,30.00,40.00,25.00,30.00,200,2026-04-01,2026-04-10,Fresh farm potatoes,images/potato.jfif
+Onion,Vegetables,kilogram,15,regular,35.00,45.00,30.00,35.00,180,2026-04-01,2026-04-12,Organic onions,images/onion.jfif
+Spinach,Leafy,bunch,5,fresh,20.00,25.00,18.00,20.00,90,2026-04-01,2026-04-03,Green leafy spinach,images/spinach.jfif
+Coriander,Leafy,bunch,3,fresh,15.00,20.00,12.00,15.00,120,2026-04-01,2026-04-03,Fresh coriander leaves,images/coriander.jfif
+Carrot,Vegetables,kilogram,12,fresh,40.00,50.00,35.00,40.00,150,2026-04-01,2026-04-08,Crunchy carrots,images/carrot.jfif
+Cabbage,Vegetables,piece,6,fresh,25.00,30.00,22.00,25.00,80,2026-04-01,2026-04-07,Fresh green cabbage,images/cabbage.jfif
+Chicken,Meat,kilogram,8,regular,220.00,250.00,200.00,220.00,60,2026-04-01,2026-04-03,Fresh chicken meat,images/chicken.jfif
+Fish,Meat,kilogram,10,fresh,300.00,350.00,280.00,300.00,70,2026-04-01,2026-04-02,Fresh river fish,images/fish.jfif
+Eggs,Eggs,dozen,10,fresh,90.00,100.00,85.00,90.00,150,2026-04-01,2026-04-10,Farm fresh eggs,images/eggs.jfif
+Brown Eggs,Eggs,dozen,8,organic,110.00,130.00,100.00,110.00,100,2026-04-01,2026-04-10,Organic brown eggs,images/brown_eggs.jfif
+Rice,Cereals,kilogram,25,regular,60.00,70.00,55.00,60.00,300,2026-04-01,,Premium rice grains,images/rice.jfif
+Wheat,Cereals,kilogram,30,regular,45.00,55.00,40.00,45.00,250,2026-04-01,,High quality wheat,images/wheat.jfif
+Millet,Millets,kilogram,18,natural,70.00,85.00,65.00,70.00,200,2026-04-01,,Healthy millet grains,images/millet.jfif
+Ragi,Millets,kilogram,20,natural,80.00,95.00,75.00,80.00,180,2026-04-01,,Nutritious ragi grains,images/ragi.jfif
+Lettuce,Leafy,bunch,4,fresh,30.00,40.00,28.00,30.00,70,2026-04-01,2026-04-04,Crispy lettuce leaves,images/lettuce.jfif
+Broccoli,Vegetables,kilogram,6,fresh,90.00,110.00,85.00,90.00,60,2026-04-01,2026-04-06,Fresh broccoli,images/broccoli.jfif
+Beetroot,Vegetables,kilogram,10,fresh,50.00,60.00,45.00,50.00,100,2026-04-01,2026-04-08,Healthy beetroot,images/beetroot.jfif
+Garlic,Vegetables,gram,500,regular,120.00,140.00,110.00,120.00,200,2026-04-01,2026-04-20,Strong flavored garlic,images/garlic.jfif
+Ginger,Vegetables,gram,500,organic,130.00,150.00,120.00,130.00,180,2026-04-01,2026-04-18,Fresh ginger root,images/ginger.jfif
+Paneer,Meat,gram,500,fresh,250.00,300.00,230.00,250.00,90,2026-04-01,2026-04-05,Soft dairy paneer,images/paneer.jfif

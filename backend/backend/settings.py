@@ -9,12 +9,17 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import cloudinary 
+import cloudinary.uploader
+import cloudinary.api
+import os
+from dotenv import load_dotenv
 
 from pathlib import Path
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -48,6 +53,10 @@ INSTALLED_APPS = [
     'products',
     'AI_Negotiaton',
     'Cart',
+    'orders',
+
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 
@@ -115,7 +124,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+CLOUDINARY_STORAGE={
+    'CLOUD_NAME':os.getenv("CLOUDINARY_CLOUD_NAME"),
+    'API_KEY':os.getenv("CLOUDINARY_API_KEY"),
+    'API_SECRET':os.getenv("CLOUDINARY_API_SECRET")
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

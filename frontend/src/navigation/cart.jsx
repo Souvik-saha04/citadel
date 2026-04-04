@@ -3,33 +3,37 @@ import axiosInstance from "../api/axiosInstance"
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react'
 import { BsCart3 } from "react-icons/bs";
+import { MdFamilyRestroom } from "react-icons/md";
+import { FaUserFriends } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
+import { PiBuildingOfficeFill } from "react-icons/pi";
 
 const SAVED_ADDRESSES = [
     {
         id: 1,
         label: "Home",
-        icon: "🏠",
+        icon: <FaHome/>,
         pincode: "700124",
         full: "BG2, Pocket B, South City I, Sector 41, Gurgaon",
     },
     {
         id: 2,
         label: "Office",
-        icon: "🏢",
+        icon: <PiBuildingOfficeFill/>,
         pincode: "110001",
         full: "4th Floor, Tower B, Cyber Hub, DLF Phase 2, Gurugram",
     },
     {
         id: 3,
         label: "Parents",
-        icon: "👨‍👩‍👦",
+        icon: <MdFamilyRestroom/>,
         pincode: "400053",
         full: "12, Shivaji Nagar, Near MG Road, Pune, Maharashtra",
     },
     {
         id: 4,
         label: "Friend",
-        icon: "👤",
+        icon: <FaUserFriends/>,
         pincode: "560001",
         full: "No. 7, Brigade Road, Shivajinagar, Bengaluru",
     },
@@ -43,13 +47,14 @@ export default function Cart() {
         discount: 0,
         total: 0,
         itemCount: 0,
-        negotiatedPrice: 0
+        negotiatedPrice: 0,
+        image:''
     })
 
     // Address state
     const [selectedAddress, setSelectedAddress] = useState(SAVED_ADDRESSES[0])
     const [showAddressModal, setShowAddressModal] = useState(false)
-
+    const[paymentSuccess,setpaymentSuccess]=useState(false)
     useEffect(() => {
         fetchCart();
     }, [])
@@ -59,7 +64,7 @@ export default function Cart() {
             .then(res => {
                 if (res.data.message) {
                     setProducts([]);
-                    setCartStats({ mrp: 0, discount: 0, total: 0, itemCount: 0, negotiatedPrice: 0 });
+                    setCartStats({ mrp: 0, discount: 0, total: 0, itemCount: 0, negotiatedPrice: 0,image:'' });
                 } else {
                     setProducts(res.data);
                     calculateCartStats(res.data);
@@ -135,14 +140,64 @@ export default function Cart() {
         }
     }, [products]);
 
-    const placeOrder = () => {
+    /* const placeOrder = () => {
         if (products.length === 0) {
             alert("Your cart is empty!");
             return;
         }
         navigate("/order_confirmed");
-    }
+    } */
+    const handleCheckout = async () => {
+        if (products.length === 0) {
+            alert("Your cart is empty!");
+            return;
+        }
 
+        try {
+            const res = await axiosInstance.post("/order/create-order/", {
+                items: products
+            });
+
+            const data = res.data;
+
+            const options = {
+                key: data.key,
+                amount: data.amount,
+                currency: "INR",
+                order_id: data.order_id,
+                handler: async function (response) {
+                    try {
+                        const pay_res = await axiosInstance.post("/order/verify/", response);
+                        
+                        const payment_response = pay_res.data;
+                        
+                        if (payment_response.status === "success") {
+                            setpaymentSuccess(true);
+                            alert("✅ Payment Successful!");
+                            navigate("/order_confirmed");
+                        } else {
+                            setpaymentSuccess(false);
+                            alert("❌ Payment Failed!");
+                        }
+                    } catch (error) {
+                        console.error("Payment verification error:", error);
+                        alert("Payment verification failed");
+                    }
+                }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        } catch (error) {
+            console.error("Checkout error:", error);
+            if (error.response && error.response.status === 401) {
+                alert("❌ You must be logged in to place an order!");
+                navigate("/login");
+            } else {
+                alert(`❌ Error: ${error.response?.data?.error || "Failed to create order"}`);
+            }
+        }
+    };
     const handleSelectAddress = (address) => {
         setSelectedAddress(address);
         setShowAddressModal(false);
@@ -166,19 +221,17 @@ export default function Cart() {
             <div className="cart-container">
                 <div>
                     {/* ── DELIVERY CARD ── */}
-                    <div className="card delivery-card">
-                        <div className="delivery-info">
-                            <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
+                    <div className="card delivery-card" >
+                        <div className="delivery-info" onClick={() => setShowAddressModal(true)}>
+                            <div className="delivery-logo">
+                                 {selectedAddress.icon}
+                            </div>
                             <div>
                                 <div className="delivery-title">
+                                   
                                     Deliver to:{" "}
                                     <span className="highlight">
-                                        {selectedAddress.label}, {selectedAddress.pincode}
+                                        {selectedAddress.label}, {selectedAddress.pincode} 
                                     </span>
                                 </div>
                                 <div className="delivery-address">{selectedAddress.full}</div>
@@ -199,7 +252,9 @@ export default function Cart() {
                         {products.length > 0 ? (
                             products.map((product) => (
                                 <div className="cart-item" key={product.product_id}>
-                                    <div className="item-image"></div>
+                                    <div className="item-image">    
+                                        <img src={product.image} alt={product.name} />
+                                    </div>
                                     <div className="item-details">
                                         <div className="item-name">
                                             {product.name}
@@ -292,7 +347,7 @@ export default function Cart() {
                                 <span>Easy returns. 100% Authentic products</span>
                             </div>
                         </div>
-                        <button className="place-order-btn" onClick={placeOrder} disabled={products.length === 0}>
+                        <button className="place-order-btn" onClick={handleCheckout} disabled={products.length === 0}>
                             PLACE ORDER
                         </button>
                     </div>

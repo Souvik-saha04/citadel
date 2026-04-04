@@ -12,15 +12,15 @@
 }
 
 .card-farm {
-    background: #00b4d8;
+    background: linear-gradient(135deg,#FF9800,#F4511E);
 }
 
 .card-freshness {
-    background: #83aff0 ;
+    background: linear-gradient(135deg,#29B6F6,#0288D1) ;
 }
 
 .card-delivery {
-    background: #d0e2f5;
+    background: linear-gradient(135deg,#81C784,#2E7D32);
 }
 
 .category-card h3 {

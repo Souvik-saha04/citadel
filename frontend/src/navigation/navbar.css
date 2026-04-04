@@ -388,19 +388,124 @@ a {
     align-items: center;
     gap: 8px;
     padding: 6px 14px 6px 6px;
-    background: linear-gradient(135deg, #f0f9e8 0%, #f8fdf5 100%);
+    /* background: linear-gradient(135deg, #f0f9e8 0%, #f8fdf5 100%); */
     border-radius: 50px;
-    border: 2px solid #e5f2d8;
+    /* border: 2px solid #e5f2d8; */
     transition: all 0.3s ease;
     cursor: pointer;
 }
+
 .profile-section:hover {
     background: linear-gradient(135deg, #e8f5dc 0%, #f0f9e8 100%);
     border-color: #84c225;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(132, 194, 37, 0.2);
 }
+/* ── PROFILE WRAPPER & DROPDOWN ── */
+.profile-wrapper {
+  position: relative;
+}
 
+.profile-wrapper:hover .profile-dropdown {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
+  border: 1px solid #e8e8e8;
+  padding: 8px 0;
+  z-index: 999;
+
+  /* Animation */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Little arrow/caret pointing up */
+.profile-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 20px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-left: 1px solid #e8e8e8;
+  border-top: 1px solid #e8e8e8;
+  transform: rotate(45deg);
+}
+
+.profile-dropdown-header {
+  padding: 12px 16px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-dropdown-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+.profile-dropdown-sub {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.profile-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.profile-dropdown-item:hover {
+  background: #f5faf5;
+  color: #2e7d32;
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 6px 0;
+}
+
+.profile-dropdown-logout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #d32f2f;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.profile-dropdown-logout:hover {
+  background: #fff5f5;
+}
 .profile-icon {
     height: 32px;
     width: 32px;

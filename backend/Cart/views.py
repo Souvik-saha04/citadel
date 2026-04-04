@@ -56,7 +56,7 @@ def viewcart(request):
             {
                 "product_id": item.product.id,  
                 "name": item.product.name,
-                "image": item.product.image,  
+                "image": item.product.image.url,  
                 "category": item.product.category,  
                 "quantity": item.quantity,
                 "price per unit": float(price),  

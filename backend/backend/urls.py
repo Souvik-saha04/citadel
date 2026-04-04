@@ -25,6 +25,7 @@ urlpatterns = [
     path('products/',include('products.urls')),
     path('negotiate/',include('AI_Negotiaton.urls')),
     path('cart/',include('Cart.urls')),
+    path('order/',include('orders.urls')),
 ]
 """ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) """

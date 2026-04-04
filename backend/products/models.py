@@ -1,6 +1,6 @@
 from django.db import models
 # Create your models here.
-
+from cloudinary.models import CloudinaryField
 class Product(models.Model):
     name=models.CharField(max_length=100)
     category_choices=[
@@ -41,6 +41,6 @@ class Product(models.Model):
     harvest_date=models.DateField(null=False,blank=False)
     expiry=models.DateField(null=True,blank=True)
     description=models.TextField(null=True,blank=True)
-    image=models.URLField(max_length=1000,null=False,blank=False)
+    image=CloudinaryField('image')
     def __str__(self):
         return self.name
