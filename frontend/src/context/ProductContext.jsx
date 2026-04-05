@@ -12,7 +12,7 @@ export function ProductProvider({children}){
         setProducts(data);
         setLoading(false)
         })
-        .catch((error)=>console.log(error))
+        .catch((error)=>{})
     },[]
     ) */
     return(

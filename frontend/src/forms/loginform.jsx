@@ -39,7 +39,6 @@ export default function Login({setauth})
             localStorage.setItem("access",response.data.access);
             localStorage.setItem("refresh",response.data.refresh);
 
-            console.log(response.data)
             setauth({
                 isLoggedIn:true,
                 username: response.data.user_name,

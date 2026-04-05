@@ -55,7 +55,6 @@ export default function Register()
                     withCredentials:true,
                 }
             );
-            console.log(response.data);
             setformdata({
                 username: "",
                 email: "",
@@ -72,11 +71,6 @@ export default function Register()
             navigate("/login");
         }
         catch (error) {
-            console.log("ERROR OBJECT:", error);
-            console.log("ERROR RESPONSE:", error.response);
-            console.log("ERROR DATA:", error.response?.data);
-            console.log("ERROR STATUS:", error.response?.status);
-            
             alert(
             error.response?.data?.error || 
             error.response?.data?.detail ||
