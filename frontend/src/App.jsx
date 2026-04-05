@@ -36,7 +36,7 @@ function App() {
 
   const RequireAuth = ({ children }) => {
   const access = localStorage.getItem("access");
-  return access ? children : <Navigate to="/login" />;
+  return access ? children : <Navigate to="/" />;
 };
 
   return (
