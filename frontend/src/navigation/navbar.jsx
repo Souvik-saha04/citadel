@@ -43,6 +43,13 @@ export default function Navbar({ auth, setauth }) {
   const navigate = useNavigate()
 
   useEffect(() => {
+    const access = localStorage.getItem('access')
+    if (!access) {
+      setauth({ isLoggedIn: false, username: null })
+      setLoading(false)
+      return
+    }
+
     axiosInstance.get('/api/profile/')
       .then((res) => {
         setData(res.data)
