@@ -5,12 +5,19 @@ from django.shortcuts import get_object_or_404
 from products.models import Product
 from .models import NegotiationHistory
 from .negotiation import negotiate_price, MAX_NEGOTIATION_ROUNDS
-from .ai_messages import generate_message
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def negotiate_view(request):
+    try:
+        from .ai_messages import generate_message
+    except ImportError:
+        return Response(
+            {"error": "AI negotiation service is unavailable. Please contact support."},
+            status=503
+        )
+
     user = request.user
 
     # ---------- INPUT VALIDATION ----------
