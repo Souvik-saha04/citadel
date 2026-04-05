@@ -1,4 +1,4 @@
-# 🏰 CITADEL
+# 🥬 GreenGrocer
 ### Smart Shopping with AI Bargaining — Daily Essentials, Negotiated Prices
 
 ![Status](https://img.shields.io/badge/Status-Active%20Development-1D9E75?style=flat-square&labelColor=085041)
@@ -9,16 +9,16 @@
 
 ---
 
-> **Citadel** is a full-stack e-commerce web application designed around one simple idea:
+> **GreenGrocer** is a full-stack e-commerce web application designed around one simple idea:
 > shopping for daily essentials should be **smart, affordable, and human.**
 >
-> In Citadel, users don't just buy. **They bargain.**
+> In GreenGrocer, users don't just buy. **They bargain.**
 
 ---
 
-## ★ What Makes Citadel Unforgettable
+## ★ What Makes GreenGrocer Unforgettable
 
-Citadel introduces an **AI-powered bargaining assistant** that allows users to negotiate prices just like they would in a real marketplace.
+GreenGrocer introduces an **AI-powered bargaining assistant** that allows users to negotiate prices just like they would in a real marketplace.
 
 Instead of fixed prices, users can:
 
@@ -27,13 +27,13 @@ Instead of fixed prices, users can:
 - 🤖 **Interact** with an intelligent AI that understands pricing logic
 - 💰 **Feel the thrill** of saving money, not just spending it
 
-This makes Citadel feel **alive** — not like a static shopping website, but like a real, dynamic market experience brought online.
+This makes GreenGrocer feel **alive** — not like a static shopping website, but like a real, dynamic market experience brought online.
 
 ---
 
 ## 🛒 What You Can Buy
 
-Citadel focuses on real, daily-use products that people depend on every day:
+GreenGrocer focuses on real, daily-use products that people depend on every day:
 
 | Category | Items |
 |---|---|
@@ -87,7 +87,7 @@ Every product is curated with **freshness, affordability, and availability** in 
 ## 📁 Project Structure
 
 ```
-citadel/
+greengrocer/
 │
 ├── frontend/        # React (Vite) — UI, bargaining interface, cart
 ├── backend/         # Django — REST API, auth, admin, product management
@@ -123,7 +123,7 @@ Features are being actively refined with a focus on **performance, realism, and 
 
 ## 💡 The Vision
 
-Citadel is built on the belief that:
+GreenGrocer is built on the belief that:
 
 > *great technology should feel natural, helpful, and empowering.*
 
@@ -139,7 +139,7 @@ The AI bargaining system reflects:
 
 > *"Not just another app. Something different."*
 
-Citadel combines **full-stack engineering**, **AI thinking**, and **real-world problem solving** into a single application that feels practical, intelligent, and memorable.
+GreenGrocer combines **full-stack engineering**, **AI thinking**, and **real-world problem solving** into a single application that feels practical, intelligent, and memorable.
 
 This is the kind of project that makes someone pause and say:
 
@@ -147,4 +147,4 @@ This is the kind of project that makes someone pause and say:
 
 ---
 
-<p align="center">Built with ❤️ by the Citadel team</p>
+<p align="center">Built with ❤️ by the GreenGrocer team</p>
