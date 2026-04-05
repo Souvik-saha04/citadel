@@ -19,7 +19,7 @@ function ProductView() {
   const [roundsRemaining, setRoundsRemaining] = useState(5);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/products/${id}/`)
+    axios.get(`${import.meta.env.VITE_API_URL}/products/${id}/`)
       .then(res => {
         setProducts(res.data);
         setLoading(false);

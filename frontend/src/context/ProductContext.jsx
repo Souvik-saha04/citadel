@@ -6,7 +6,7 @@ export function ProductProvider({children}){
     const [products,setProducts]=useState([])
     const [loading,setLoading]=useState(true)
     /* useEffect(()=>{
-        fetch("http://localhost:8000/products/get_products/")
+        fetch("${import.meta.env.VITE_API_URL}/products/get_products/")
         .then((response)=> response.json())
         .then((data)=>{
         setProducts(data);
