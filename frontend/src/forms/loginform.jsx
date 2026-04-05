@@ -24,7 +24,7 @@ export default function Login({setauth})
         setloading(true);
         try{
             const response=await axios.post(
-                "${import.meta.env.VITE_API_URL}/api/login/",
+                `${import.meta.env.VITE_API_URL}/api/login/`,
                 {
                     username:formdata.username,
                     password:formdata.password

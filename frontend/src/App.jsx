@@ -28,7 +28,7 @@ function App() {
   }, [])
 
   useEffect(() => {
-    fetch("${import.meta.env.VITE_API_URL}/products/get_products/")
+    fetch(`${import.meta.env.VITE_API_URL}/products/get_products/`)
       .then(res => res.json())
       .then(data => setProducts(data))
       .catch(err => console.error(err))
