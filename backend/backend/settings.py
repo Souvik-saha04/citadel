@@ -75,7 +75,7 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS=[
-    "https://greengrocers-one.vercel.app/",
+    "https://greengrocers-one.vercel.app",
     ]
 
 
