@@ -1,8 +1,13 @@
-import csv 
+import json
+import cloudinary
 import cloudinary.uploader
 from products.models import Product
-import cloudinary
 import os
+from dotenv import load_dotenv
+from datetime import datetime
+from decimal import Decimal
+
+load_dotenv()
 
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
@@ -11,56 +16,70 @@ cloudinary.config(
 )
 
 def run():
-    with open("../products.csv", newline='', encoding='utf-8') as file:
-        reader = csv.DictReader(file)
-        products = []
+    with open("../products.json", "r", encoding="utf-8") as file:
+        data = json.load(file)
 
-        for row in reader:
-            try:
-                safe_name = row['name'].replace(" ", "_").lower()
-                folder_path = f"../images/{safe_name}"
+    products = []
 
-                if not os.path.exists(folder_path):
-                    print(f"❌ Folder not found for {row['name']}")
-                    continue
+    for item in data:
+        try:
+            product_name = item['name']
+            safe_name = product_name.replace(" ", "_").lower()
+            folder_path = f"../images/{safe_name}"
 
-                files = os.listdir(folder_path)
+            if not os.path.exists(folder_path):
+                print(f"❌ Folder not found for {product_name}")
+                continue
 
-                if not files:
-                    print(f"❌ No image found for {row['name']}")
-                    continue
+            files = os.listdir(folder_path)
 
-                image_path = os.path.join(folder_path, files[0])
+            if not files:
+                print(f"❌ No image found for {product_name}")
+                continue
 
-                print("Uploading:", image_path)
+            image_path = os.path.join(folder_path, files[0])
 
-                upload_result = cloudinary.uploader.upload(image_path)
-                public_id = upload_result['public_id']
+            print("📤 Uploading:", image_path)
 
-                product = Product(
-                    name=row['name'],
-                    category=row['category'],
-                    unit=row['unit'],
-                    quantity=int(row['quantity']),
-                    variant=row['variant'],
-                    price_per_unit=row['price_per_unit'],
-                    original_price=row['original_price'],
-                    min_price=row['min_price'],
-                    current_price=row['current_price'],
-                    stock_quantity=int(row['stock_quantity']),
-                    harvest_date=row['harvest_date'],
-                    expiry=row['expiry'] or None,
-                    description=row['description'],
-                    image=public_id   
-                )
+            # ✅ Upload to Cloudinary
+            upload_result = cloudinary.uploader.upload(
+                image_path,
+                public_id=f"products/{safe_name}",
+                overwrite=True
+            )
 
-                products.append(product)
+            public_id = upload_result['public_id']
 
-                print(f"✅ Processed: {row['name']}")
+            # ✅ Create Product object
+            product = Product(
+                name=product_name,
+                category=item['category'],
+                unit=item['unit'],
+                quantity=int(item['quantity']),
+                variant=item['variant'],
 
-            except Exception as e:
-                print(f"❌ Error with {row['name']}: {e}")
+                price_per_unit=Decimal(item['price_per_unit']),
+                original_price=Decimal(item['originalPrice']),
+                min_price=Decimal(item['price_per_unit']),
+                current_price=Decimal(item['price_per_unit']),
 
-        Product.objects.bulk_create(products)
+                stock_quantity=int(item['stockQuantity']),
+
+                harvest_date=datetime.strptime(item['harvestDate'], "%Y-%m-%d").date(),
+                expiry=datetime.strptime(item['expiry'], "%Y-%m-%d").date() if item.get('expiry') else None,
+
+                description=item.get('description', ""),
+
+                image=public_id
+            )
+
+            products.append(product)
+
+            print(f"✅ Processed: {product_name}")
+
+        except Exception as e:
+            print(f"❌ Error with {item.get('name')}: {e}")
+
+    Product.objects.bulk_create(products)
 
     print("🎉 All products uploaded successfully!")

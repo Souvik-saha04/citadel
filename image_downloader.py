@@ -1,28 +1,34 @@
 import os
-import csv
+import json
 from icrawler.builtin import BingImageCrawler
 
+# Create images folder
 os.makedirs("images", exist_ok=True)
 
-with open("products.csv", newline='', encoding='utf-8') as file:
-    reader = csv.DictReader(file)
+# Load JSON file
+with open("products.json", "r", encoding="utf-8") as file:
+    data = json.load(file)
 
-    for row in reader:
-        product_name = row['name']
-        safe_name = product_name.replace(" ", "_").lower()
+# Loop through products
+for item in data:
+    product_name = item.get("name", "unknown")
+    safe_name = product_name.replace(" ", "_").lower()
 
-        print(f"Downloading image for {product_name}...")
+    print(f"Downloading image for {product_name}...")
 
-        try:
-            crawler = BingImageCrawler(storage={'root_dir': f'images'})
-            crawler.crawl(
-                keyword=product_name + " raw and fresh food",
-                max_num=1
-            )
+    try:
+        crawler = BingImageCrawler(
+            storage={'root_dir': f'images/{safe_name}'}
+        )
 
-            print(f"✅ Download attempted for {product_name}")
+        crawler.crawl(
+            keyword=product_name + "specific item image",
+            max_num=1
+        )
 
-        except Exception as e:
-            print(f"❌ Error with {product_name}: {e}")
+        print(f"✅ Downloaded image for {product_name}")
 
-print("🎉 All images download attempted!")
+    except Exception as e:
+        print(f"❌ Error with {product_name}: {e}")
+
+print("🎉 All images downloaded!")
